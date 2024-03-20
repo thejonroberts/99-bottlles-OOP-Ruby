@@ -21,7 +21,7 @@ class BottleNumber
     register(candidate)
   end
 
-  def self.handles?(number)
+  def self.handles?(_number)
     true
   end
 
@@ -102,7 +102,7 @@ class Bottles
   end
 
   def verses(upper, lower)
-    upper.downto(lower).map {|i| verse(i)}.join("\n")
+    upper.downto(lower).map {|number| verse(number)}.join("\n")
   end
 
   def verse(number)
@@ -112,9 +112,5 @@ class Bottles
     "#{bottle_number} of beer.\n" +
     "#{bottle_number.action}, " +
     "#{bottle_number.successor.to_s} of beer on the wall.\n"
-  end
-
-  def bottle_number_for(number)
-    BottleNumber.for(number)
   end
 end
