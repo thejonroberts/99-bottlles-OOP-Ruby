@@ -5,12 +5,24 @@ class BottleNumber
     @number = number
   end
 
+  def self.for(number)
+    klass = case number
+    when 0
+      BottleNumber0
+    when 1
+      BottleNumber1
+    else
+      BottleNumber
+    end
+    klass.new(number)
+  end
+
   def to_s
     "#{quantity} #{container}"
   end
 
   def successor
-    number - 1
+    BottleNumber.for(number - 1)
   end
 
   def action
@@ -36,7 +48,7 @@ class BottleNumber0 < BottleNumber
   end
 
   def successor
-    99
+    BottleNumber.for(99)
   end
 
   def quantity
@@ -64,24 +76,15 @@ class Bottles
   end
 
   def verse(number)
-    bottle_number = bottle_number_for(number)
-    next_bottle_number = bottle_number_for(bottle_number.successor)
+    bottle_number = BottleNumber.for(number)
 
     "#{bottle_number}".capitalize + " of beer on the wall, " +
     "#{bottle_number} of beer.\n" +
     "#{bottle_number.action}, " +
-    "#{next_bottle_number.to_s} of beer on the wall.\n"
+    "#{bottle_number.successor.to_s} of beer on the wall.\n"
   end
 
   def bottle_number_for(number)
-    klass = case number
-    when 0
-      BottleNumber0
-    when 1
-      BottleNumber1
-    else
-      BottleNumber
-    end
-    klass.new(number)
+    BottleNumber.for(number)
   end
 end
