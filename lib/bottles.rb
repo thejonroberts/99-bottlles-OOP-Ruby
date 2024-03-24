@@ -1,10 +1,47 @@
-class BottleNumber
-  attr_reader :number
+class CountdownSong
+  attr_reader :verse_template, :max, :min
 
-  def initialize(number)
-    @number = number
+   def initialize(verse_template:, max: 999_999, min: 0)
+     @verse_template = verse_template
+     @max, @min = max, min
+   end
+
+  def song
+    verses(max, min)
   end
 
+  def verses(upper, lower)
+    upper.downto(lower).map {|number| verse(number)}.join("\n")
+  end
+
+  def verse(number)
+    verse_template.lyrics(number)
+  end
+end
+
+
+class BottleVerse
+  def self.lyrics(number)
+    bottle_number = BottleNumber.for(number)
+    new(bottle_number).lyrics
+  end
+
+  attr_reader :bottle_number
+
+  def initialize(bottle_number)
+    @bottle_number = bottle_number
+  end
+
+  def lyrics
+    "#{bottle_number} of beer on the wall, ".capitalize +
+    "#{bottle_number} of beer.\n" +
+    "#{bottle_number.action}, " +
+    "#{bottle_number.successor} of beer on the wall.\n"
+  end
+end
+
+
+class BottleNumber
   def self.for(number)
     registry.find {|candidate| candidate.handles?(number)}.new(number)
   end
@@ -23,6 +60,11 @@ class BottleNumber
 
   def self.handles?(_number)
     true
+  end
+
+  attr_reader :number
+  def initialize(number)
+    @number = number
   end
 
   def to_s
@@ -93,45 +135,5 @@ class BottleNumber6 < BottleNumber
 
   def quantity
     1
-  end
-end
-
-class BottleVerse
-  def self.lyrics(number)
-    new(BottleNumber.for(number)).lyrics
-  end
-
-  attr_reader :bottle_number
-
-  def initialize(bottle_number)
-    @bottle_number = bottle_number
-  end
-
-  def lyrics
-    "#{bottle_number} of beer on the wall, ".capitalize +
-    "#{bottle_number} of beer.\n" +
-    "#{bottle_number.action}, " +
-    "#{bottle_number.successor} of beer on the wall.\n"
-  end
-end
-
-class CountdownSong
-  attr_reader :verse_template, :max, :min
-
-   def initialize(verse_template:, max: 999_999, min: 0)
-     @verse_template = verse_template
-     @max, @min = max, min
-   end
-
-  def song
-    verses(max, min)
-  end
-
-  def verses(upper, lower)
-    upper.downto(lower).map {|number| verse(number)}.join("\n")
-  end
-
-  def verse(number)
-    verse_template.lyrics(number)
   end
 end
