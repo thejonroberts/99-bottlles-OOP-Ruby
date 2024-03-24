@@ -1,5 +1,4 @@
 detectors:
-  # You can disable smells completely
   IrresponsibleModule:
     enabled: false
   UncommunicativeModuleName:
@@ -8,4 +7,3 @@ detectors:
   UtilityFunction:
     exclude:
       - "BottleNumber0#successor"
-      - "Bottles#verse"
