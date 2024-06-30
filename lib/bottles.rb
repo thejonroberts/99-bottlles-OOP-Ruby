@@ -1,24 +1,24 @@
 class CountdownSong
   attr_reader :verse_template, :max, :min
 
-   def initialize(verse_template:, max: 999_999, min: 0)
-     @verse_template = verse_template
-     @max, @min = max, min
-   end
+  def initialize(verse_template:, max: 999_999, min: 0)
+    @verse_template = verse_template
+    @max = max
+    @min = min
+  end
 
   def song
     verses(max, min)
   end
 
   def verses(upper, lower)
-    upper.downto(lower).map {|number| verse(number)}.join("\n")
+    upper.downto(lower).map { |number| verse(number) }.join("\n")
   end
 
   def verse(number)
     verse_template.lyrics(number)
   end
 end
-
 
 class BottleVerse
   def self.lyrics(number)
@@ -34,16 +34,15 @@ class BottleVerse
 
   def lyrics
     "#{bottle_number} of beer on the wall, ".capitalize +
-    "#{bottle_number} of beer.\n" +
-    "#{bottle_number.action}, " +
-    "#{bottle_number.successor} of beer on the wall.\n"
+      "#{bottle_number} of beer.\n" +
+      "#{bottle_number.action}, " +
+      "#{bottle_number.successor} of beer on the wall.\n"
   end
 end
 
-
 class BottleNumber
   def self.for(number)
-    registry.find {|candidate| candidate.handles?(number)}.new(number)
+    registry.find { |candidate| candidate.handles?(number) }.new(number)
   end
 
   def self.registry
@@ -54,6 +53,7 @@ class BottleNumber
     registry.prepend(candidate)
   end
 
+  # use inherited hook to register all subclasses
   def self.inherited(candidate)
     register(candidate)
   end
@@ -62,7 +62,22 @@ class BottleNumber
     true
   end
 
+  # NOTE: simpler factory
+  # def self.for(number)
+  #   case number
+  #   when 0
+  #     BottleNumber0
+  #   when 1
+  #     BottleNumber1
+  #   when 6
+  #     BottleNumber6
+  #   else
+  #     BottleNumber
+  #   end.new(number)
+  # end
+
   attr_reader :number
+
   def initialize(number)
     @number = number
   end
@@ -84,7 +99,7 @@ class BottleNumber
   end
 
   def container
-    "bottles"
+    'bottles'
   end
 
   def pronoun
@@ -98,7 +113,7 @@ class BottleNumber0 < BottleNumber
   end
 
   def action
-    "Go to the store and buy some more"
+    'Go to the store and buy some more'
   end
 
   def successor
@@ -106,7 +121,7 @@ class BottleNumber0 < BottleNumber
   end
 
   def quantity
-    "no more"
+    'no more'
   end
 end
 
@@ -116,7 +131,7 @@ class BottleNumber1 < BottleNumber
   end
 
   def container
-    "bottle"
+    'bottle'
   end
 
   def pronoun
@@ -130,7 +145,7 @@ class BottleNumber6 < BottleNumber
   end
 
   def container
-    "six-pack"
+    'six-pack'
   end
 
   def quantity

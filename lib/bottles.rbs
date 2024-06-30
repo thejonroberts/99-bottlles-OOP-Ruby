@@ -1,0 +1,67 @@
+class CountdownSong
+  @verse_template: BottleVerse
+  @max: Integer
+  @min: Integer
+
+  attr_reader verse_template: BottleVerse
+  attr_reader max: Integer
+  attr_reader min: Integer
+
+  def initialize: (verse_template: BottleVerse, ?max: ::Integer, ?min: ::Integer) -> void
+  def song: () -> String
+  def verses: (Integer upper, Integer lower) -> String
+  def verse: (Integer number) -> String
+end
+
+class BottleVerse
+  @bottle_number: BottleNumber
+
+  def self.lyrics: (Integer number) -> String
+
+  attr_reader bottle_number: untyped
+  def initialize: (BottleNumber bottle_number) -> void
+  def lyrics: () -> String
+end
+
+class BottleNumber
+  self.@registry: Array[singleton(BottleNumber)]
+  @number: Integer
+
+  def self.for: (Integer number) -> BottleNumber
+  def self.registry: () -> Array[BottleNumber]
+  def self.register: (BottleNumber candidate) -> void
+  def self.inherited: (BottleNumber candidate) -> void
+  def self.handles?: (Integer _number) -> true
+
+  attr_reader number: Integer
+
+  def initialize: (Integer number) -> void
+  def to_s: () -> ::String
+  def successor: () -> BottleNumber
+  def action: () -> ::String
+  def quantity: () -> Integer
+  def container: () -> "bottles"
+  def pronoun: () -> "one"
+end
+
+class BottleNumber0 < BottleNumber
+  def self.handles?: (Integer number) -> bool
+
+  def action: () -> "Go to the store and buy some more"
+  def successor: () -> BottleNumber
+  def quantity: () -> "no more"
+end
+
+class BottleNumber1 < BottleNumber
+  def self.handles?: (Integer number) -> bool
+
+  def container: () -> "bottle"
+  def pronoun: () -> "it"
+end
+
+class BottleNumber6 < BottleNumber
+  def self.handles?: (Integer number) -> bool
+
+  def container: () -> "six-pack"
+  def quantity: () -> 1
+end
