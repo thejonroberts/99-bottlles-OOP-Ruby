@@ -1,0 +1,9 @@
+detectors:
+  IrresponsibleModule:
+    enabled: false
+  UncommunicativeModuleName:
+    enabled: false
+
+  UtilityFunction:
+    exclude:
+      - "BottleNumber0#successor"
